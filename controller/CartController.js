@@ -2,46 +2,31 @@ const cart = require('../model/CartModel');
 const Product = require('../model/ProductModel');
 
 const addtocart = async (req, res) => {
-  try {
-    const { products } = req.body;
-    const userid = req.user;
-    const data = await cart.findOne({ userid });
-    if (data) {
-        products.forEach(j => {
-        const exist = data.products.find(p => p.productid === j.productid);
-        
-        if (exist) {
-            exist.quantity = j.quantity;
-        } 
+  try{
       
-        else {
-            data.products.push({
-            productid: j.productid,
-            quantity: j.quantity
-          });
+    const userid=req.user;
+
+    const productid=req.body.productid;
+    const quantity=req.body.quantity;
+    const incart=await cart.findOne({userid});
+    if(incart){
+        const isProduct = incart.products.find(p => p.productid === productid);
+        if (isProduct) {
+            isProduct.quantity = (parseInt(isProduct.quantity) + parseInt(quantity)).toString();
+        } else {
+            incart.products.push({ productid, quantity });
         }
-      });
-
-      
-      await data.save();
-      res.status(200).send({ msg: "Products added to cart" });
-
-    } 
-    else {
-      const newCart = new cart({
-        userid,
-        products: products.map(r => ({
-          productid: r.productid,
-          quantity: r.quantity
-        }))
-      });
-      await newCart.save();
-      res.status(200).send({ msg: "Products added to cart" });
+        await incart.save();
+        res.send(incart);
+    }else{
+            const add=new cart({userid,products:[{productid,quantity}]});
+            await add.save();
+            res.send(add);
+        }
     }
-  } catch (error) {
-    console.log(error)
-    res.status(500).send({ msg: "Internal server error" });
-  }
+catch(err){
+    console.log(err);
+}
 };
 
 const getitem = async (req, res) => {

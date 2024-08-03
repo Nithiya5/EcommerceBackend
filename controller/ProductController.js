@@ -21,6 +21,7 @@ const getallproducts = async(req,res)=>{
 const addproduct = async (req, res) => {
     try {
         const {title, description, price, category, image, rating } = req.body;
+        console.log(title, description, price, category, image, rating )
         const newProduct = new product({
             id:uuidv4(),
             title,
@@ -28,10 +29,7 @@ const addproduct = async (req, res) => {
             price,
             category,
             image,
-            rating:rating.map(r=>({
-                rate:r.rate,
-                count:r.count
-            }))
+            rating
         });
         await newProduct.save();
         res.status(201).send({msg:"Product added successfully"});
