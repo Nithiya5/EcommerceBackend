@@ -9,7 +9,7 @@ const productroutes = require('./routes/Productrouter')
 const userroutes = require('./routes/Userrouter')
 const cartroutes = require('./routes/Cartrouter')
 const orderroutes = require('./routes/Orderrouter')
-mongoose.connect('mongodb+srv://jayasudhat2022cse:69Lb2LWOBjUepozS@cluster05.olvpemp.mongodb.net/Ecommerce').then(()=>{
+mongoose.connect('mongodb+srv://nithiyaR:nithiya2005@cluster0.a02jqzo.mongodb.net/ecommerce1?retryWrites=true&w=majority&appName=Cluster0').then(()=>{
     console.log("Connection is successful!!!!");
 });
 
