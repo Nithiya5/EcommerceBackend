@@ -38,12 +38,13 @@ const login = async(req,res)=>{
         return res.status(400).send({msg:"please provide valid password"});
     }
     const token = jwt.sign({_id : exists._id},'secret_key',{
-        expiresIn: "1h",
+        expiresIn: "8h",
     })
     res.json({token});
 }
 catch(error){
-   res.status(500).send({msg:"Internal server error",error})
+   res.status(500).send({msg:"Internal server error",error});
+   console.log(error)
 }
 }
 module.exports = {register,login}
